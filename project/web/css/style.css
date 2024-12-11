@@ -1,0 +1,66 @@
+body {
+  font-family: Arial, sans-serif;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
+  margin: 0;
+  background-color: #f4f4f9;
+}
+
+/* Container Principal */
+.main-container {
+  display: flex;
+  gap: 20px;
+}
+
+/* Cartões */
+.card {
+  background: #ffffff;
+  padding: 20px;
+  border-radius: 10px;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+  text-align: center;
+  width: 300px;
+}
+
+/* Títulos */
+.card h1 {
+  margin-bottom: 20px;
+  font-size: 24px;
+  color: #333333;
+}
+
+/* Contador */
+.counter {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  margin-bottom: 20px;
+}
+
+/* Botões */
+button {
+  padding: 10px 20px;
+  font-size: 18px;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  background-color: #007bff;
+  color: white;
+  transition: background-color 0.3s ease;
+}
+
+button:hover {
+  background-color: #0056b3;
+}
+
+/* Botão Zerar */
+#reset {
+  background-color: #ff4d4d;
+}
+
+#reset:hover {
+  background-color: #cc0000;
+}
