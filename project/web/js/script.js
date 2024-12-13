@@ -1,78 +1,71 @@
-document.addEventListener("DOMContentLoaded", () => {
+document.addEventListener("DOMContentLoaded", function() {
+  // Elementos do contador
+  var countDisplay = document.getElementById("count");
+  var incrementButton = document.getElementById("increment");
+  var decrementButton = document.getElementById("decrement");
+  var resetButton = document.getElementById("reset");
 
-  const countDisplay = document.getElementById("count");
-  const incrementButton = document.getElementById("increment");
-  const decrementButton = document.getElementById("decrement");
-  const resetButton = document.getElementById("reset");
+  // Atualizar a exibição do contador
+  function updateDisplay(count) {
+    countDisplay.textContent = count;
+  }
 
-  const updateDisplay = () => (countDisplay.textContent = count);
-  const saveToLocalStorage = () => localStorage.setItem("counter", count);
+  // Função para enviar requisições ao servidor
+  function sendCounterRequest(action) {
+    eel.update_counter_exposed(action)(updateDisplay);
+  }
 
-  let count = parseInt(localStorage.getItem("counter")) || 0; 
- 
-  incrementButton.addEventListener("click", () => {
-    count++;
-    updateDisplay();
-    saveToLocalStorage();
+  // Eventos dos botões do contador
+  incrementButton.addEventListener("click", function() {
+    sendCounterRequest('increment');
   });
 
-  decrementButton.addEventListener("click", () => {
-    count--;
-    updateDisplay();
-    saveToLocalStorage();
+  decrementButton.addEventListener("click", function() {
+    sendCounterRequest('decrement');
   });
 
-  resetButton.addEventListener("click", () => {
-    count = 0;
-    updateDisplay();
-    saveToLocalStorage();
+  resetButton.addEventListener("click", function() {
+    sendCounterRequest('reset');
   });
 
-  updateDisplay();
 
 
+  // Elementos do timer
+  var timerDisplay = document.getElementById("timer");
+  var startTimerButton = document.getElementById("start-timer");
+  var stopTimerButton = document.getElementById("stop-timer");
+  var resetTimerButton = document.getElementById("reset-timer");
 
-  const timerDisplay = document.getElementById("timer");
-  const startTimerButton = document.getElementById("start-timer");
-  const stopTimerButton = document.getElementById("stop-timer");
-  const resetTimerButton = document.getElementById("reset-timer");
+  // Atualizar a exibição do timer
+  function updateTimerDisplay(seconds) {
+    timerDisplay.textContent = formatTime(seconds);
+  }
 
-  const updateTimerDisplay = () => (timerDisplay.textContent = formatTime(seconds));
-  const saveTimerToLocalStorage = () => localStorage.setItem("timerSeconds", seconds);
+  // Formatar o tempo em HH:MM:SS
+  function formatTime(seconds) {
+    var hrs = String(Math.floor(seconds / 3600)).padStart(2, "0");
+    var mins = String(Math.floor((seconds % 3600) / 60)).padStart(2, "0");
+    var secs = String(seconds % 60).padStart(2, "0");
+    return hrs + ":" + mins + ":" + secs;
+  }
 
-  let seconds = parseInt(localStorage.getItem("timerSeconds")) || 0;
-  let timer = null;
-
-  const formatTime = (seconds) => {
-    const hrs = String(Math.floor(seconds / 3600)).padStart(2, "0");
-    const mins = String(Math.floor((seconds % 3600) / 60)).padStart(2, "0");
-    const secs = String(seconds % 60).padStart(2, "0");
-    return `${hrs}:${mins}:${secs}`;
-  };
-
-
-  startTimerButton.addEventListener("click", () => {
-    if (timer === null) {
-      timer = setInterval(() => {
-        seconds++;
-        updateTimerDisplay();
-        saveTimerToLocalStorage();
-      }, 1000);
-    }
+  // Eventos dos botões do timer
+  startTimerButton.addEventListener("click", function() {
+    eel.start_timer_exposed();
   });
 
-  stopTimerButton.addEventListener("click", () => {
-    clearInterval(timer);
-    timer = null;
+  stopTimerButton.addEventListener("click", function() {
+    eel.stop_timer_exposed();
   });
 
-  resetTimerButton.addEventListener("click", () => {
-    clearInterval(timer);
-    timer = null;
-    seconds = 0;
-    updateTimerDisplay();
-    saveTimerToLocalStorage();
+  resetTimerButton.addEventListener("click", function() {
+    eel.update_timer_exposed('reset')(updateTimerDisplay);
   });
 
-  updateTimerDisplay();
+  // Atualiza a exibição inicial do contador e do timer
+  eel.get_counter_exposed()(updateDisplay);
+  eel.get_timer_exposed()(updateTimerDisplay);
+
+  // Expor a função de atualização do timer para o Python
+  eel.expose(updateTimerDisplay);
 });
