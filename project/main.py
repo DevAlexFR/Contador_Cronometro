@@ -19,11 +19,15 @@ def get_timer_exposed():
 
 @eel.expose
 def start_timer_exposed():
-    ct.start_timer()
+    return ct.start_timer()
 
 @eel.expose
 def stop_timer_exposed():
-    ct.stop_timer()
+    return ct.stop_timer()
+
+@eel.expose
+def update_timer_exposed():
+    return ct.update_timer()
 
 if __name__ == '__main__':
     eel.start('index.html', size=(800, 400), mode='edge')

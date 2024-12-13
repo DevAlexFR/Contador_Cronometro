@@ -59,7 +59,7 @@ document.addEventListener("DOMContentLoaded", function() {
   });
 
   resetTimerButton.addEventListener("click", function() {
-    eel.update_timer_exposed('reset')(updateTimerDisplay);
+    eel.update_timer_exposed();
   });
 
   // Atualiza a exibição inicial do contador e do timer
